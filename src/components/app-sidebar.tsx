@@ -1,13 +1,12 @@
 import { NavLink, useLocation } from "react-router-dom";
 import {
   LayoutDashboard,
-  ShoppingCart,
+  Receipt,
   Package,
+  Boxes,
   Users,
-  DollarSign,
-  ChefHat,
-  FileText,
-  Settings,
+  Landmark,
+  Truck,
 } from "lucide-react";
 
 import {
@@ -22,39 +21,94 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 
-const items = [
-  { title: "Dashboard", url: "/", icon: LayoutDashboard },
-  { title: "Compras", url: "/compras", icon: ShoppingCart },
-  { title: "Estoque", url: "/estoque", icon: Package },
-  { title: "Receitas", url: "/receitas", icon: ChefHat },
-  { title: "Clientes", url: "/clientes", icon: Users },
-  { title: "Financeiro", url: "/financeiro", icon: DollarSign },
-  { title: "Relatórios", url: "/relatorios", icon: FileText },
-  { title: "Configurações", url: "/configuracoes", icon: Settings },
-];
+const isActivePath = (current: string, path: string) =>
+  current === path || current.startsWith(path + "/");
 
 export function AppSidebar() {
   const { state } = useSidebar();
   const isCollapsed = state === "collapsed";
-  const location = useLocation();
+  const { pathname } = useLocation();
 
   return (
     <Sidebar collapsible="icon">
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Menu</SidebarGroupLabel>
+          <SidebarGroupLabel>Navegação</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {items.map((item) => (
-                <SidebarMenuItem key={item.url}>
-                  <SidebarMenuButton asChild isActive={location.pathname === item.url}>
-                    <NavLink to={item.url} end>
-                      <item.icon className="mr-2 h-4 w-4" />
-                      {!isCollapsed && <span>{item.title}</span>}
-                    </NavLink>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
+              {/* Dashboard */}
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild isActive={isActivePath(pathname, "/")}> 
+                  <NavLink to="/" end>
+                    <LayoutDashboard className="mr-2 h-4 w-4" />
+                    {!isCollapsed && <span>Dashboard</span>}
+                  </NavLink>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+
+              {/* Vendas */}
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild isActive={isActivePath(pathname, "/vendas/acertos")}>
+                  <NavLink to="/vendas/acertos">
+                    <Receipt className="mr-2 h-4 w-4" />
+                    {!isCollapsed && <span>Acertos (Vendas)</span>}
+                  </NavLink>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+
+              {/* Estoque */}
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild isActive={isActivePath(pathname, "/estoque/insumos")}>
+                  <NavLink to="/estoque/insumos">
+                    <Package className="mr-2 h-4 w-4" />
+                    {!isCollapsed && <span>Insumos</span>}
+                  </NavLink>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild isActive={isActivePath(pathname, "/estoque/produtos")}>
+                  <NavLink to="/estoque/produtos">
+                    <Boxes className="mr-2 h-4 w-4" />
+                    {!isCollapsed && <span>Produtos</span>}
+                  </NavLink>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+
+              {/* Financeiro */}
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild isActive={isActivePath(pathname, "/financeiro/pagar")}>
+                  <NavLink to="/financeiro/pagar">
+                    <Landmark className="mr-2 h-4 w-4" />
+                    {!isCollapsed && <span>Contas a Pagar</span>}
+                  </NavLink>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild isActive={isActivePath(pathname, "/financeiro/receber")}>
+                  <NavLink to="/financeiro/receber">
+                    <Landmark className="mr-2 h-4 w-4" />
+                    {!isCollapsed && <span>Contas a Receber</span>}
+                  </NavLink>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+
+              {/* Cadastros */}
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild isActive={isActivePath(pathname, "/fornecedores")}>
+                  <NavLink to="/fornecedores">
+                    <Truck className="mr-2 h-4 w-4" />
+                    {!isCollapsed && <span>Fornecedores</span>}
+                  </NavLink>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild isActive={isActivePath(pathname, "/clientes")}>
+                  <NavLink to="/clientes">
+                    <Users className="mr-2 h-4 w-4" />
+                    {!isCollapsed && <span>Clientes</span>}
+                  </NavLink>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
